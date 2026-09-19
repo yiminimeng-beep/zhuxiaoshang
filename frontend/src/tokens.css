@@ -1,0 +1,116 @@
+/* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V4
+ * Hallmark · genre: modern-minimal · theme: Coral
+ *   · design-system: design.md · designed-as-app
+ *   · app family: Stat-Led workbench · auth gate: Letter + identity gate
+ *   · nav: N9 edge-aligned minimal (+ wordmark) · footer: none (app screen)
+ *   · enrichment: auth wash only · contrast: pass · honest: pass · chrome: pass
+ *   · tokens: pass (48) · responsive: pass · icons: pass
+ *
+ * 这是本工程**唯一**的色值与字体来源。任何组件里出现 `#hex` / `oklch()` /
+ * 裸 `font-family` 都是违规（slop-test gate 48）——要用新值就lift成命名 token。
+ *
+ * 为什么不是 Google Fonts：受众是中国大陆的本地商户与消费者，
+ * fonts.googleapis.com 在那边不稳定。改成 @fontsource 自托管、随 Vite 打包，
+ * 运行时零外部请求。中文交给系统字体（PingFang SC / 微软雅黑）——
+ * 那是用户每天在读的字面，比任何 webfont 都更"本地"。
+ */
+
+@theme {
+  /* ── 纸与墨 ──────────────────────────────────────────────── */
+  --color-paper: oklch(96.5% 0.005 50);
+  --color-paper-2: oklch(94% 0.006 50);
+  --color-paper-3: oklch(91% 0.008 50);
+  --color-rule: oklch(86% 0.008 50);
+  --color-rule-2: oklch(72% 0.01 50);
+  --color-muted: oklch(52% 0.012 50);
+  --color-neutral: oklch(38% 0.012 45);
+  --color-ink-2: oklch(26% 0.012 40);
+  --color-ink: oklch(20% 0.01 35);
+
+  /* ── 唯一信号色：暖珊瑚。占屏 ≤ 5%，是荧光笔不是色块 ────────── */
+  --color-accent: oklch(64% 0.165 28);
+  --color-accent-ink: oklch(98% 0.005 50);
+  --color-focus: oklch(64% 0.165 28);
+
+  /* ── 语义色：错误 / 成功。都不是纯红纯绿，各带一点暖调 ───────── */
+  --color-danger: oklch(52% 0.19 27);
+  --color-danger-surface: oklch(95% 0.03 27);
+  --color-ok: oklch(48% 0.11 155);
+  --color-ok-surface: oklch(95% 0.025 155);
+
+  /* ── 字体（2+1 上限：display · body · label，仅此三族） ──────── */
+  --font-display: 'Geist Variable', 'PingFang SC', 'HarmonyOS Sans SC',
+    'Microsoft YaHei', ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-display);
+  --font-label: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ── 字号阶梯 ────────────────────────────────────────────── */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+  --text-display: clamp(1.75rem, 4vw + 0.75rem, 2.5rem);
+  --text-brand: clamp(2.5rem, 8vw + 1rem, 3.75rem);
+
+  /* ── 行高与字距 ──────────────────────────────────────────── */
+  --lh-tight: 1.08;
+  --lh-snug: 1.25;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.7;
+  --tracking-display: -0.025em;
+  --tracking-tight: -0.015em;
+  --tracking-label: 0.05em;
+
+  /* ── 间距（4px 基准，gate 24 只认这一套） ───────────────────── */
+  --spacing: 0.25rem;
+  /* `@theme` 里的 `--spacing` 只给数值倍率（`gap-4` 之类靠它算），
+     组件层用的 `var(--spacing-sm)` 这类**具名**档必须显式声明，否则整条
+     声明被浏览器丢弃、间距静默变成 0 */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 0.75rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2.5rem;
+  --spacing-2xl: 4rem;
+
+  /* ── 客户创作台玻璃面（只给创作台 / 弹层） ─────────────────── */
+  --color-glass: oklch(100% 0 0 / 0.55);
+  --color-glass-border: oklch(100% 0 0 / 0.8);
+  --color-glass-hover: oklch(100% 0 0 / 0.72);
+  --blur-glass: 12px;
+  --radius-panel: 16px;
+  --radius-hero: 24px;
+  --text-hero: clamp(1.75rem, 3.2vw + 1rem, 2.375rem);
+  --tracking-hero: 0.2em;
+  --lh-hero: 1.55;
+  --weight-hero: 400;
+  --dur-reveal: 400ms;
+
+  /* ── 圆角与阴影：Coral 是软 pill，不是直角 ──────────────────── */
+  --radius-card: 8px;
+  --radius-pill: 999px;
+  --radius-input: 6px;
+
+  --shadow-card: 0 1px 2px oklch(20% 0.01 50 / 0.06);
+  --shadow-lift: 0 4px 12px -6px oklch(20% 0.01 50 / 0.18);
+
+  /* ── 动效：极简。只有一处短过渡，且全部有 reduced-motion 兜底 ── */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --ease-soft: cubic-bezier(0.2, 0, 0.2, 1);
+
+  /* ── 层级：导航永远压在页内 sticky 之上（gate 56） ───────────── */
+  --z-sticky: 200;
+  --z-sticky-nav: 300;
+  --z-overlay: 400;
+  --z-fab: 350;
+  --banner-height: 3.75rem;
+
+  /* ── 版心 ─────────────────────────────────────────────────── */
+  --page-max: 48rem;
+  --page-gutter: clamp(1rem, 4vw, 2rem);
+  --measure: 45ch;
+}
